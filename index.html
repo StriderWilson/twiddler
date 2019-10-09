@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+      <meta charset="utf-8">
+      <title>Twiddler</title>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
     <script>
@@ -10,18 +13,70 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+        $body.addClass('body')
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
+        var index = 0;
+        while(index < streams.home.length){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          console.log($tweet);
+          var timeStamp = tweet.created_at;
+          $tweet.text('@' + tweet.user + ': ' + tweet.message + ' [' + timeStamp + ']');
+          var $button = $("<button></button>");
+          $button.text('@' + tweet.user);
+          $button.appendTo($body);
           $tweet.appendTo($body);
-          index -= 1;
+          $tweet.addClass('tweet ' + tweet.user);
+          $button.addClass('userbtn ' + tweet.user);
+          index++;
+          console.log($button);
         }
+        console.log($body[0]);
+        $('.userbtn').css('background-color', '#1dcaff').css('color', 'white').css('border-radius', '10px');
+        $('.body').before('<h1 class="title"><button class="titlebtn">@Twiddler</button></h1>');
+        $(".titlebtn").css("height", "140px").css('width', '480px').css('font-size', "100px").css('border-radius', '65px').css("background-color", "#1dcaff").css('color', 'white').css('font-family', 'Apple-Chancery').css('font-weight', 'bold').css({
+          position: "absolute",
+          left: "300px"
+        });;
+        $('div').css('padding', '5px')
+        $('div').css('border', '1px solid #0084b4').css('margin', '5px').css('border-radius', '15px')
+        $('body').addClass('grid').css({
+          position: "absolute",
+          top: "170px"
+        }).css({
+          position: "absolute",
+          left: "100px"
+        });
+
+        $(".titlebtn").click(function() {
+          $('.sharksforcheap').show();
+          $('.shawndrost').show();
+          $('.mracus').show();
+          $('.douglascalhoun').show();
+        });
+        $(".douglascalhoun").click(function() {
+          $('.sharksforcheap').hide();
+          $('.shawndrost').hide();
+          $('.mracus').hide();
+          $('.douglascalhoun').show();
+        });
+        $(".sharksforcheap").click(function() {
+          $('.douglascalhoun').hide();
+          $('.shawndrost').hide();
+          $('.mracus').hide();
+        });
+        $(".shawndrost").click(function() {
+          $('.douglascalhoun').hide();
+          $('.sharksforcheap').hide();
+          $('.mracus').hide();
+        });
+        $(".mracus").click(function() {
+          $('.douglascalhoun').hide();
+          $('.sharksforcheap').hide();
+          $('.shawndrost').hide();
+        });
 
       });
-
     </script>
   </body>
 </html>
