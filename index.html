@@ -2,24 +2,33 @@
 <html lang="en">
   <head>
       <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="main.css">
       <title>Twiddler</title>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   </head>
-  <body>
+
+  <body class="test">
+      <header>
+          <h1 class="title"><button class="titlebtn">@Twiddler</button></h1>
+          <h2 class="show"><button class="refresh">See All Users</button></h2>
+      </header>
+      <div class="messages"></div>
+
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
-        $body.addClass('body')
+        var $body = $('.messages');
 
-        var index = 0;
-        while(index < streams.home.length){
+
+
+        var index = streams.home.length - 1;
+        while(index > 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          console.log($tweet);
           var timeStamp = tweet.created_at;
+          // var timeStamp = moment(time, "YYYYMMDD").fromNow();
           $tweet.text('@' + tweet.user + ': ' + tweet.message + ' [' + timeStamp + ']');
           var $button = $("<button></button>");
           $button.text('@' + tweet.user);
@@ -27,28 +36,18 @@
           $tweet.appendTo($body);
           $tweet.addClass('tweet ' + tweet.user);
           $button.addClass('userbtn ' + tweet.user);
-          index++;
-          console.log($button);
+          index--;
         }
-        $('.body').before('<h1 class="title"><button class="titlebtn">@Twiddler</button></h1>');
-        $(".titlebtn").css("height", "140px").css('width', '480px').css('font-size', "100px").css('border-radius', '65px').css("background-color", "#1dcaff").css('color', 'white').css('font-family', 'Apple-Chancery').css('font-weight', 'bold').css({
-          position: "absolute",
-          left: "480px"
-        });
-        $('.title').after('<button class="refresh">See All Users</button>');
-        $('.refresh').css('height', '50px').css('width', '180px').css('font-size', '20px').css('border-radius', '25px').css("background-color", "#1dcaff").css('color', 'white').css('font-weight', 'bold').css({
-          position: "absolute",
-          top: "170px"
-        }).css({
-          position: "absolute",
-          left: "620px"
-        });
 
+        var prevIndex = 10;
         $('.titlebtn').click(function() {
-          for (var i = 10; i < streams.home.length; i++) {
-          var newTweet = streams.home[i];
+          var newIndex = streams.home.length;
+
+          while (prevIndex < newIndex) {
+          var newTweet = streams.home[prevIndex];
           var $newTweet = $('<div></div>');
           var timeStamp = newTweet.created_at;
+          // var timeStamp = moment(time, "YYYYMMDD").fromNow();
           $newTweet.text('@' + newTweet.user + ': ' + newTweet.message + ' [' + timeStamp + ']');
           var $newButton = $("<button></button>");
           $newButton.text('@' + newTweet.user);
@@ -56,81 +55,29 @@
           $newTweet.appendTo($body);
           $newTweet.addClass('tweet ' + newTweet.user);
           $newButton.addClass('userbtn ' + newTweet.user);
-        }
+          prevIndex++;
+          }
+          prevIndex = streams.home.length;
 
-        $('.userbtn').css('background-color', '#1dcaff').css('color', 'white').css('border-radius', '10px');
-        $('div').css('padding', '5px')
-        $('div').css('border', '1px solid #0084b4').css('margin', '5px').css('border-radius', '15px')
-        $('body').addClass('grid').css({
-          position: "absolute",
-          top: "220px"
-        }).css({
-          position: "absolute",
-          left: "100px"
-        });
-
-        $(".douglascalhoun").click(function() {
-          $('.sharksforcheap').hide();
-          $('.shawndrost').hide();
-          $('.mracus').hide();
-          $('.douglascalhoun').show();
-        });
-        $(".sharksforcheap").click(function() {
-          $('.douglascalhoun').hide();
-          $('.shawndrost').hide();
-          $('.mracus').hide();
-        });
-        $(".shawndrost").click(function() {
-          $('.douglascalhoun').hide();
-          $('.sharksforcheap').hide();
-          $('.mracus').hide();
-        });
-        $(".mracus").click(function() {
-          $('.douglascalhoun').hide();
-          $('.sharksforcheap').hide();
-          $('.shawndrost').hide();
-        });
+          $('.userbtn').click( function() {
+            var user = "." + $(this).html().slice(1, $(this).html().length);
+            $('.tweet').hide();
+            $('.userbtn').hide();
+            $(user).show();
+          });
         });
 
-        $('.userbtn').css('background-color', '#1dcaff').css('color', 'white').css('border-radius', '10px');
-        $('div').css('padding', '5px')
-        $('div').css('border', '1px solid #0084b4').css('margin', '5px').css('border-radius', '15px')
-        $('body').addClass('grid').css({
-          position: "absolute",
-          top: "220px"
-        }).css({
-          position: "absolute",
-          left: "270px"
+        $('.userbtn').click(function() {
+            var user = "." + $(this).html().slice(1, $(this).html().length);
+            $('.tweet').hide();
+            $('.userbtn').hide();
+            $(user).show();
         });
 
         $(".refresh").click(function() {
-          $('.sharksforcheap').show();
-          $('.shawndrost').show();
-          $('.mracus').show();
-          $('.douglascalhoun').show();
+          $('.tweet').show();
+          $('.userbtn').show();
         });
-        $(".douglascalhoun").click(function() {
-          $('.sharksforcheap').hide();
-          $('.shawndrost').hide();
-          $('.mracus').hide();
-          $('.douglascalhoun').show();
-        });
-        $(".sharksforcheap").click(function() {
-          $('.douglascalhoun').hide();
-          $('.shawndrost').hide();
-          $('.mracus').hide();
-        });
-        $(".shawndrost").click(function() {
-          $('.douglascalhoun').hide();
-          $('.sharksforcheap').hide();
-          $('.mracus').hide();
-        });
-        $(".mracus").click(function() {
-          $('.douglascalhoun').hide();
-          $('.sharksforcheap').hide();
-          $('.shawndrost').hide();
-        });
-
       });
     </script>
   </body>
